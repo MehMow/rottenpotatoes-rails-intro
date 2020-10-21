@@ -15,6 +15,8 @@ class Movie < ActiveRecord::Base
       return self.where(rating: ratings) # "rating = ?", [ratings])#('ratings IN (?)', ratings)
     end
   end
+  
+  
     
   # end of part 1
 end
