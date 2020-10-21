@@ -6,8 +6,16 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
-  def index
-    @movies = Movie.all
+  def index 
+    @all_ratings = Movie.all_ratings
+    
+    if params[:ratings] == nil
+      @ratings_to_show = []
+    else
+      @ratings_to_show = params['ratings'].keys
+    end
+    
+    @movies = Movie.with_ratings(@ratings_to_show)#.all changed in part 1
   end
 
   def new
@@ -37,6 +45,8 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
+
 
   private
   # Making "internal" methods private is not required, but is a common practice.
