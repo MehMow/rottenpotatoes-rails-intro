@@ -12,7 +12,7 @@ class Movie < ActiveRecord::Base
     if ratings == []
         return self.all
     else
-      return self.where( "rating = ?", ratings)#('ratings IN (?)', ratings)
+      return self.where(rating: ratings) # "rating = ?", [ratings])#('ratings IN (?)', ratings)
     end
   end
     
