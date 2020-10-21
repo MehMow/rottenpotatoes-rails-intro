@@ -3,7 +3,8 @@
 
 <%#  Part 2: Start here... %>
 
-<%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
+<%= form_tag movies_path(), method: :get, id: 'ratings_form' do %>
+  
   Include:
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
@@ -11,16 +12,17 @@
       <%= check_box_tag "ratings[#{rating}]", "1",  @ratings_to_show.include?(rating), class: 'form-check-input' %>
     </div>
   <% end %>
+  <%= hidden_field_tag :form_home, 1 %>
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th class="hilite <%= "#{@turn_on_title}" %>"> <%= link_to "Movie Title", movies_path(:sort_title => 1, :ratings => @ratings_to_show.to_h() {|s| [s, 1]} ), @title_header %> </th>
+      <th class="hilite <%= "#{@turn_on_title}" %>"> <%= link_to "Movie Title", movies_path(:sort_title => 1, :ratings => @ratings_to_show.to_h() {|s| [s, 1]}, :home=>1 ), @title_header %> </th>
       <!-- once click, sort in ascending order; and change color to yellow-orange with CSS class hilite and class .text-primary  -->
       <th>Rating</th>
-      <th class="hilite <%= "#{@turn_on_date}" %>"> <%= link_to "Release Date", movies_path(:sort_date => 1, :ratings => @ratings_to_show.to_h() {|s| [s, 1]}  ), @title_header %> </th> <!-- once click, sort in ascending order -->
+      <th class="hilite <%= "#{@turn_on_date}" %>"> <%= link_to "Release Date", movies_path(:sort_date => 1, :ratings => @ratings_to_show.to_h() {|s| [s, 1]}, :home=>1  ), @title_header %> </th> <!-- once click, sort in ascending order -->
       <th>More Info</th>
     </tr>
   </thead>

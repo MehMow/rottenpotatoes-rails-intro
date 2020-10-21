@@ -7,37 +7,64 @@ class MoviesController < ApplicationController
   end
 
   def index 
-    @all_ratings = Movie.all_ratings
-    
+    @all_ratings = Movie.all_ratings 
     @movies = Movie.all
     
+    
+    
+    if params[:home] == nil #that means coming from somewhere else; so reload session
+      #if session[:ratings] == nil 
+      #  params[:ratings] = nil
+    #  else
+      #  params[:ratings] = session[:ratings].to_h() {|s| [s, 1]}
+      #end
+      params[:sort_date] = session[:sort_date]  
+      params[:sort_title] = session[:sort_title]
+    end
+    
+    if params[:form_home] == nil
+      params[:ratings] = session[:ratings].to_h() {|s| [s, 1]}
+    else
+      params[:ratings] = params[:ratings]
+    end
+      
+      
     if params[:ratings] == nil
       @ratings_to_show = []
+      session[:ratings]=@ratings_to_show
       @movies = Movie.with_ratings(@ratings_to_show)#.all changed in part 1
     elsif params[:ratings] != nil
-      @ratings_to_show = params['ratings'].keys
+      @ratings_to_show = params[:ratings].keys      
+      session[:ratings]=@ratings_to_show
       @movies = Movie.with_ratings(@ratings_to_show)#.all changed in part 1
     end
+      
       
     if params[:sort_title] != nil
       if params[:ratings] == nil
         @ratings_to_show = []
       else params[:ratings] != nil
-        @ratings_to_show = params['ratings'].keys
-      end
+        @ratings_to_show = params[:ratings].keys
+      end   
+      session[:ratings] = @ratings_to_show
+      session[:sort_title]=1
+      session[:sort_date] = nil
+      
       @movies = Movie.with_ratings(@ratings_to_show)
-        
       @movies = @movies.order(:title)
       @turn_on_title = "bg-warning"
+      
     elsif params[:sort_date] != nil
       if params[:ratings] == nil
         @ratings_to_show = []
-      else params[:params] != nil
-        @ratings_to_show = params['ratings'].keys
+      else params[:ratings] != nil
+        @ratings_to_show = params[:ratings].keys
       end
-      @movies = Movie.with_ratings(@ratings_to_show)
-       
-        
+      session[:ratings] = @ratings_to_show
+      session[:sort_date] = 1
+      session[:sort_title] = nil
+      
+      @movies = Movie.with_ratings(@ratings_to_show)    
       @movies = @movies.order(:release_date)
       @turn_on_date = "bg-warning"
     #else
