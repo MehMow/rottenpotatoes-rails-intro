@@ -10,9 +10,12 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings 
     @movies = Movie.all
     
-    ##if  params[:ratings]==nil && params[:sort_title]==nil && params[:sort_date]==nil
-    #  redirect_to movies_path(:sort_date => session[:sort_date], :sort_title => session[:sort_title], :ratings => session[:ratings].to_h() {|s| [s, 1]})
-   # end
+    if params[:ratings]==nil && params[:sort_title]==nil && params[:sort_date]==nil
+      if session[:ratings] == nil
+        session[:ratings] = []       
+        redirect_to movies_path(:sort_date => session[:sort_date], :sort_title => session[:sort_title], :ratings => session[:ratings]  )
+      end
+    end
     
     if params[:home] == nil #that means coming from somewhere else; so reload session
       #if session[:ratings] == nil 
