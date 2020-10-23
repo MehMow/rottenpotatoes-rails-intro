@@ -10,8 +10,6 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings 
     @movies = Movie.all
     
-    
-    
     if params[:home] == nil #that means coming from somewhere else; so reload session
       #if session[:ratings] == nil 
       #  params[:ratings] = nil
